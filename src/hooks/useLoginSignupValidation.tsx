@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { IUser } from "../common/interfaces/User";
-import { isValidEmail } from "../utils/validators";
+import { createPasswordValidationMessage, isValidEmail } from "../utils/validators";
 import IValidationObject from "../common/interfaces/ValidationObject";
-import { Functionality } from "../common/enums/Functionality";
+import { View } from "../common/enums/View";
 
 const useLoginSignupValidation = (user: IUser) => {
 
@@ -25,7 +25,7 @@ const useLoginSignupValidation = (user: IUser) => {
         setIsValidationPassed(true)
     }
 
-    const validateInputs = (functionality: Functionality): boolean => {
+    const validateInputs = (view: View): boolean => {
 
         let tempValidationObject: IValidationObject[] = [
             { name: "firstName", isValid: true, validationMessage: "" },
@@ -48,7 +48,7 @@ const useLoginSignupValidation = (user: IUser) => {
         if (user.password === "" || typeof (user.password) === "undefined") {
             setFailedValidation("password", "Please enter your password.")
         }
-        if (functionality === Functionality.SIGNUP) {
+        if (view === View.SIGNUP) {
             if (!user.firstName || (user.firstName.trim() === "" || typeof (user.firstName) === "undefined")) {
                 setFailedValidation("firstName", "Please enter your firstName.")
             }
@@ -56,18 +56,17 @@ const useLoginSignupValidation = (user: IUser) => {
                 setFailedValidation("surname", "Please enter your surname.")
             }
 
-            var ValidatePassword = require('validate-password')
-            var validator = new ValidatePassword({
-                enforce: {
-                    length: 8,
-                    letters: true,
-                    specialCharacters: false,
-                    numbers: true
-                }
-            });
-            var passwordData = validator.checkPassword(user.password);
-            if (!passwordData.isValid) {
-                setFailedValidation("password", passwordData.validationMessage)
+            var passwordValidator = require('password-validator');
+            var schema = new passwordValidator();
+            schema
+                .is().min(8)
+                .has().letters()
+                .has().digits()
+                .has().symbols()
+
+            var passwordData = schema.validate(user.password, { list: true })
+            if (passwordData.length) {
+                setFailedValidation("password", createPasswordValidationMessage(passwordData))
             }
         }
         setValidationObject(tempValidationObject)

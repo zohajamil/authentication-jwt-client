@@ -1,4 +1,4 @@
-export enum Functionality {
+export enum View {
     LOGIN = "LOGIN",
     SIGNUP = "SIGNUP"
 }

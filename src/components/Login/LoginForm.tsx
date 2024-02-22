@@ -6,7 +6,7 @@ import './loginForm.scss'
 import CustomButton from '../shared/Button/CustomButton'
 import { IUser } from '../../common/interfaces/User'
 import useLoginSignupValidation from '../../hooks/useLoginSignupValidation'
-import { Functionality } from '../../common/enums/Functionality'
+import { View } from '../../common/enums/View'
 
 function LoginForm() {
     const [user, setUser] = useState({} as IUser)
@@ -14,7 +14,7 @@ function LoginForm() {
 
     const login = () => {
         console.log('Login logic', user.email, user.password)
-        if (loginSignUpValidation.validateInputs(Functionality.LOGIN)) {
+        if (loginSignUpValidation.validateInputs(View.LOGIN)) {
             console.log('validated')
         }
         else {

@@ -1,11 +1,13 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
 .grid-container {
     height: 100vh;
+
     .purple-grid {
         background-color: $dark-primary-color;
-        color: white;
+        color: $secondary-color;
     }
+
     .white-grid {
         color: $dark-primary-color;
     }
@@ -16,5 +18,23 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
+        .col {
+            display: flex;
+            flex-direction: column;
+            h5 {
+                margin: 0;
+            }
+        }
+    }
+
+    .hyperlink {
+        color: $light-primary-color;
+        text-decoration: underline;
+        cursor: pointer;
+
+        &:hover {
+            color: $dark-primary-color;
+        }
     }
 }

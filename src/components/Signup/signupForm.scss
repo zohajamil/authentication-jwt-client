@@ -1,0 +1,17 @@
+@import '../../variables.scss';
+
+.signup-form-container {
+    h1 {
+        color: $dark-primary-color;
+    }
+
+    .signup-form {
+        display: flex;
+        flex-direction: column;
+        width: 20vw;
+
+        .field-wrapper {
+            margin-bottom: 15px;
+        }
+    }
+}
