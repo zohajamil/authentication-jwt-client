@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './images/authentication.png';
 import './App.scss';
 import Layout from './components/Layout/Layout';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Routes, Route, BrowserRouter } from "react-router-dom"
 import Home from './components/Home/Home';

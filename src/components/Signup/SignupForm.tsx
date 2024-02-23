@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import InputField from '../shared/InputField/InputField'
 import KeyIcon from '@mui/icons-material/Key'
@@ -11,19 +11,23 @@ import useLoginSignupValidation from '../../hooks/useLoginSignupValidation'
 import { View } from '../../common/enums/View'
 import useFetch from '../../hooks/useFetch'
 import { toast } from 'react-toastify'
+import { IUserContext } from '../../common/interfaces/UserContext'
+import { UserContext } from '../../context/UserContext'
 
 function SignupForm() {
     const [user, setUser] = useState<IUser>({} as IUser)
     const [secondPassword, setSecondPassword] = useState<string>('')
     const loginSignUpValidation = useLoginSignupValidation(user)
     const usersApi = useFetch("users")
+    const { login } = useContext<IUserContext>(UserContext)
 
     const signUp = async () => {
         if (loginSignUpValidation.validateInputs(View.SIGNUP) && user.password === secondPassword) {
             try {
-                const res = await usersApi.post('', user)
+                const res: IUser = await usersApi.post('', user)
                 if (res.accessToken) {
                     toast.success('User signed up successfully!')
+                    login(res)
                 }
             }
             catch (err: any) {

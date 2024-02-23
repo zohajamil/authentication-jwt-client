@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import InputField from '../shared/InputField/InputField'
 import KeyIcon from '@mui/icons-material/Key'
@@ -10,20 +10,26 @@ import { View } from '../../common/enums/View'
 import useFetch from '../../hooks/useFetch'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../../context/UserContext'
+import { IUserContext } from '../../common/interfaces/UserContext'
 
 function LoginForm() {
     const [user, setUser] = useState<IUser>({} as IUser)
     const loginSignUpValidation = useLoginSignupValidation(user)
+
     const usersApi = useFetch("users")
     let navigate = useNavigate()
+    const { login } = useContext<IUserContext>(UserContext)
 
-    const login = async () => {
+
+    const handleLogin = async () => {
         if (loginSignUpValidation.validateInputs(View.LOGIN)) {
             console.log('validated')
             try {
-                const res = await usersApi.post('/authenticate', user)
+                const res: IUser = await usersApi.post('/authenticate', user)
                 if (res.accessToken) {
                     toast.success('Logged In')
+                    login(res)
                     navigate('home')
                 }
             }
@@ -73,7 +79,7 @@ function LoginForm() {
                 <div className="field-wrapper">
                     <CustomButton
                         text={'Login'}
-                        onClick={login}
+                        onClick={handleLogin}
                     />
                 </div>
 

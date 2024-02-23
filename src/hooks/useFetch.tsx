@@ -8,10 +8,11 @@ interface Options {
 
 const useFetch = (collection: string) => {
     const stub = `${process.env.REACT_APP_BACKEND_URL}${collection}`;
-
+    const accessToken: string = localStorage.getItem('accessToken') ?? ''
     const defaultHeader = {
         Accept: "application/json",
         "Content-Type": "application/json",
+        AuthToken: accessToken
     };
 
     const customFetch = (url: string, method: "POST" | "GET", body: any, headers: any) => {
