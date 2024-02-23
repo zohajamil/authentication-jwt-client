@@ -1,0 +1,11 @@
+@import '../../variables.scss';
+
+.home-container {
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $dark-primary-color;
+    color: $secondary-color;
+}

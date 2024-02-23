@@ -7,15 +7,29 @@ import CustomButton from '../shared/Button/CustomButton'
 import { IUser } from '../../common/interfaces/User'
 import useLoginSignupValidation from '../../hooks/useLoginSignupValidation'
 import { View } from '../../common/enums/View'
+import useFetch from '../../hooks/useFetch'
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom'
 
 function LoginForm() {
-    const [user, setUser] = useState({} as IUser)
+    const [user, setUser] = useState<IUser>({} as IUser)
     const loginSignUpValidation = useLoginSignupValidation(user)
+    const usersApi = useFetch("users")
+    let navigate = useNavigate()
 
-    const login = () => {
-        console.log('Login logic', user.email, user.password)
+    const login = async () => {
         if (loginSignUpValidation.validateInputs(View.LOGIN)) {
             console.log('validated')
+            try {
+                const res = await usersApi.post('/authenticate', user)
+                if (res.accessToken) {
+                    toast.success('Logged In')
+                    navigate('home')
+                }
+            }
+            catch (err: any) {
+                toast.error(err.message)
+            }
         }
         else {
             console.log('not validated')
@@ -24,7 +38,7 @@ function LoginForm() {
 
     return (
         <div className="login-form-container">
-            <h1>Login Form</h1>
+            <h1>Log In</h1>
             <div className="login-form">
                 <div className="field-wrapper">
                     <InputField

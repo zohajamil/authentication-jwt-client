@@ -15,6 +15,7 @@ const InputField = (props: IInputFieldProps) => {
                     ) : null
                 ),
             }}
+            color="secondary"
             variant="standard"
             type={props.type}
             value={props.value}

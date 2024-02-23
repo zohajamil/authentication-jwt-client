@@ -9,16 +9,26 @@ import CustomButton from '../shared/Button/CustomButton'
 import { IUser } from '../../common/interfaces/User'
 import useLoginSignupValidation from '../../hooks/useLoginSignupValidation'
 import { View } from '../../common/enums/View'
+import useFetch from '../../hooks/useFetch'
+import { toast } from 'react-toastify'
 
 function SignupForm() {
     const [user, setUser] = useState<IUser>({} as IUser)
     const [secondPassword, setSecondPassword] = useState<string>('')
     const loginSignUpValidation = useLoginSignupValidation(user)
+    const usersApi = useFetch("users")
 
-    const signUp = () => {
-        console.log('signup logic', user)
+    const signUp = async () => {
         if (loginSignUpValidation.validateInputs(View.SIGNUP) && user.password === secondPassword) {
-            console.log('validated')
+            try {
+                const res = await usersApi.post('', user)
+                if (res.accessToken) {
+                    toast.success('User signed up successfully!')
+                }
+            }
+            catch (err: any) {
+                toast.error(err.message)
+            }
         }
         else {
             console.log('not validated')
@@ -27,7 +37,7 @@ function SignupForm() {
 
     return (
         <div className="signup-form-container">
-            <h1>Sign up Form</h1>
+            <h1>Sign up</h1>
             <div className="signup-form">
                 <div className="field-wrapper">
                     <InputField
