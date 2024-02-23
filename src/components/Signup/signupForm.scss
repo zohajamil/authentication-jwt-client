@@ -8,10 +8,11 @@
     .signup-form {
         display: flex;
         flex-direction: column;
-        width: 20vw;
+        width: max-content;
 
         .field-wrapper {
             margin-bottom: 15px;
+            padding:0 5px 0 5px;
         }
     }
 }

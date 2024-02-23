@@ -13,6 +13,7 @@ import useFetch from '../../hooks/useFetch'
 import { toast } from 'react-toastify'
 import { IUserContext } from '../../common/interfaces/UserContext'
 import { UserContext } from '../../context/UserContext'
+import { useNavigate } from 'react-router-dom'
 
 function SignupForm() {
     const [user, setUser] = useState<IUser>({} as IUser)
@@ -20,6 +21,7 @@ function SignupForm() {
     const loginSignUpValidation = useLoginSignupValidation(user)
     const usersApi = useFetch("users")
     const { login } = useContext<IUserContext>(UserContext)
+    let navigate = useNavigate()
 
     const signUp = async () => {
         if (loginSignUpValidation.validateInputs(View.SIGNUP) && user.password === secondPassword) {
@@ -28,6 +30,7 @@ function SignupForm() {
                 if (res.accessToken) {
                     toast.success('User signed up successfully!')
                     login(res)
+                    navigate('home')
                 }
             }
             catch (err: any) {

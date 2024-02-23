@@ -8,7 +8,7 @@
     .login-form {
         display: flex;
         flex-direction: column;
-        width: 20vw;
+        width: max-content;
 
         .field-wrapper {
             margin-bottom: 15px;
